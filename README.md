@@ -1,6 +1,6 @@
 
 
-[![License](https://img.shields.io/badge/license-MIT-green)](https://github.com/LUMII-Syslab/sat-generator/blob/master/COPYING)
+[![License](https://img.shields.io/badge/license-MIT-green)](https://github.com/LUMII-Syslab/sat-generator/blob/master/LICENSE)
 
 # SAT Generator
 
