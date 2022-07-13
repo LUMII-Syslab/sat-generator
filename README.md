@@ -17,7 +17,7 @@ The `PrimesProductToSAT.py` script generates a SAT instance from the known produ
 
 If $p$ and $q$ are *distinct primes*, the generated SAT instance will have *exactly one solution* (we assume $p>q$).
 
-Since our generator uses the Karatsuba multiplication algorithm recursively, the number of bits of each factor (and, hence, the product) must be a power of 2. Thus, we may extend the length of $p$, $q$, and $n$ to satisfy that condition. The benefit of the Karatsuba algorithm is that even for small $n$, we get asymptotically less SAT variables $\Theta(n^{\log_2{3}})=O(n^{1.58})$ compared to the traditional or Chinese multiplication with the  $\Theta(n^2)$ complexity.
+Since our generator uses the Karatsuba multiplication algorithm recursively, the number of bits of each factor (and, hence, the product) must be a power of 2. Thus, we may extend the length of $p$, $q$, and $n$ to satisfy that condition. The benefit of the Karatsuba algorithm is that even for small $n$, we get asymptotically less SAT variables $\Theta(n^{\log_2{3}})=O(n^{1.585})$ compared to the traditional or Chinese multiplication with the  $\Theta(n^2)$ complexity.
 
 ## Usage
 
