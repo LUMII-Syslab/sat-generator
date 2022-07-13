@@ -179,4 +179,6 @@ class SatInteger:
                 if len(s) > 0:
                     s += ","
                 s += str(self.literals[i])
-            return s + " (" + str(e) + ")"
+            return s
+            # if we want to see details:
+            # return s + " (" + str(e) + ")"
