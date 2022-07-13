@@ -5,6 +5,12 @@ A tool for generating hard SAT instances (in the DIMACS format) based on the int
 The main contributor:
 * Sergejs Kozlovičs
 
+## The Paper and How to Cite It
+
+**Kozlovičs, S.** (2022). *Shared SAT Solvers and SAT Memory in Distributed Business Applications*. In: Ivanovic, M., Kirikova, M., Niedrite, L. (eds) Digital Business and Intelligent Systems. Baltic DB&IS 2022. Communications in Computer and Information Science, vol 1598. Springer, Cham.
+
+[Get citation!](https://link.springer.com/chapter/10.1007/978-3-031-09850-5_14#citeas)
+
 ## Integer Factorization to SAT
 
 The `PrimesProductToSAT.py` script generates a SAT instance from the known product $n=p\cdot q$ of two positive numbers $p$ and $q$ greater than 1. Generally speaking, $p$ and $q$ need not be primes.
