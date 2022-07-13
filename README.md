@@ -1,5 +1,10 @@
 # SAT Generator
 
+A tool for generating hard SAT instances (in the DIMACS format) based on the integer factoring problem.
+
+The main contributor:
+* Sergejs Kozlovičs
+
 ## Integer Factorization to SAT
 
 The `PrimesProductToSAT.py` script generates a SAT instance from the known product $n=p\cdot q$ of two positive numbers $p$ and $q$ greater than 1. Generally speaking, $p$ and $q$ need not be primes.
