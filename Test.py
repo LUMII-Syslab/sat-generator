@@ -159,9 +159,10 @@ def test_sum_with_solver(p, q):
 
     cnf = CNF(mem, expected_result)
     clauses = cnf.clauses()
-    print("clauses (" + str(len(clauses)) + ")=", clauses)
+    #print("clauses (" + str(len(clauses)) + ")=", clauses)
     print("Solving: look at ", list(reversed(list(map(lambda x: str(x), q.literals)))))  # q = p_q - p
 
+    return
     with Solver(name="Cadical", bootstrap_with=clauses, use_timer=True) as solver:
         is_sat = solver.solve()
         print("Cadical result: ", is_sat, '{0:.4f}s'.format(solver.time()), len(clauses), " clauses")
@@ -198,9 +199,8 @@ def test_product(p, q):
 
 def test_product_with_solver(n, p, q):
     mem = p.sat_memory
-    mem.clear_values()
+    #mem.clear_values()
 
-    diff = p.sum_with(q.negation())
     p_q = p.product_with(q)
 
     # Computing the expected_result clause, e.g.,
@@ -231,6 +231,7 @@ def test_product_with_solver(n, p, q):
             conjuncts.append(p_q.literals[i])
         else:
             conjuncts.append(p_q.literals[i].inverse())
+    print (p_q)
 
     # conjuncts that ensure unique solution:
     # 1) exclude negative numbers
@@ -243,13 +244,26 @@ def test_product_with_solver(n, p, q):
     diff = p.sum_with(q.negation())
     conjuncts.append(diff.literals[-1].inverse())
 
+
+    sss = ""
+    for con in conjuncts:
+        sss += str(con)+" "
+    print("CONJUNCTS ",sss)
     expected_result = And(mem, conjuncts)
 
     cnf = CNF(mem, expected_result)
     clauses = cnf.clauses()
-    print("clauses (" + str(len(clauses)) + ")=", clauses)
+    # print("clauses (" + str(len(clauses)) + ")=", clauses)
     print("Solving: look at p=", list(reversed(list(map(lambda x: str(x), p.literals)))))
     print("Solving: look at q=", list(reversed(list(map(lambda x: str(x), q.literals)))))
+
+    print (p_q)
+
+    from DimacsFile import DimacsFile
+    df = DimacsFile("test.cnf")
+    df.add_clauses(clauses)
+
+    df.store(str(p)+" "+str(q))
 
     with Solver(name="Cadical", bootstrap_with=clauses, use_timer=True) as solver:
         is_sat = solver.solve()
@@ -267,8 +281,8 @@ def test_product_with_solver(n, p, q):
 
 if __name__ == "__main__":
 
-    given_p = 3
-    given_q = 2
+    given_p = 127#114#127 #114 # 127  #3
+    given_q = 113#101#113 #101 # 113  #2
     p_bits = bits_required(given_p)
     q_bits = bits_required(given_q)
     n = given_p * given_q
@@ -290,15 +304,53 @@ if __name__ == "__main__":
     print(str(n_bits) + "-bit product = ", str(p_bits) + "-bit factor", " x ", str(q_bits) + "-bit factor")
 
     mem = SatMemory(p_bits + q_bits)  # number of free vars
+    # mem.assign("x1", True)
+    # mem.assign("x2", True)
+    # mem.assign("x3", True)
+    # mem.assign("x4", True)
+    # mem.assign("x5", True)
+    # mem.assign("x6", True)
+    # mem.assign("x7", True)
+    # mem.assign("x8", False)
+    #
+    # mem.assign("x9", True)
+    # mem.assign("x10", False)
+    # mem.assign("x11", False)
+    # mem.assign("x12", False)
+    # mem.assign("x13", True)
+    # mem.assign("x14", True)
+    # mem.assign("x15", True)
+    # mem.assign("x16", False)
+
+    # mem.assign("x1", True)
+    # mem.assign("x2", False)
+    # mem.assign("x3", False)
+    # mem.assign("x4", True)
+    # mem.assign("x5", False)
+    # mem.assign("x6", True)
+    # mem.assign("x7", True)
+    # mem.assign("x8", False)
+    #
+    # mem.assign("x9", True)
+    # mem.assign("x10", True)
+    # mem.assign("x11", True)
+    # mem.assign("x12", False)
+    # mem.assign("x13", True)
+    # mem.assign("x14", False)
+    # mem.assign("x15", True)
+    # mem.assign("x16", False)
+
     p_vars = ["x" + str(k) for k in range(1, p_bits + 1)]
     p = SatInteger(mem, p_vars)
+    print(p)
     q_vars = ["x" + str(k) for k in range(p_bits + 1, p_bits + q_bits + 1)]
     q = SatInteger(mem, q_vars)
+    print(q)
 
     # test_negation(p)
     # test_negation_zero(p)
     # test_negation_with_solver(p)
     # test_sum(p, q)
     # test_sum_with_solver(p, q)
-    # test_product(p, q)
+    #test_product(p, q)
     test_product_with_solver(n, p, q)

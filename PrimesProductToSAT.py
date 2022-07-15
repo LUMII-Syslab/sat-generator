@@ -89,9 +89,9 @@ if __name__ == "__main__":
     expected_result = And(mem, conjuncts)
 
     cnf = CNF(mem, expected_result)
+    clauses = cnf.clauses()
 
     df = DimacsFile(str(n) + ".cnf")
-    clauses = cnf.clauses()
     df.add_clauses(clauses)
 
     comment = "SAT instance for factoring " + str(n)

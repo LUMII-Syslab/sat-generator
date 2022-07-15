@@ -108,7 +108,7 @@ class SatInteger:
                             str(self.n_bits) + " and " + str(other.n_bits) + ")")
         if self.n_bits == 1:
             product_lo = And(self.sat_memory, [self.literals[0], other.literals[0]]).simplified_literal()
-            product_hi = self.sat_memory.literals["False"]
+            product_hi = Constant(self.sat_memory, False)
             return SatInteger(self.sat_memory, [product_lo, product_hi])
 
         if self.n_bits % 2 == 1:
