@@ -60,7 +60,7 @@ if __name__ == "__main__":
     q_vars = ["x" + str(k) for k in range(p_bits + 1, p_bits + q_bits + 1)]
     q = SatInteger(mem, q_vars)
 
-    pq = p.product_with(q)
+    pq = p.product_with(q, True)  # the last argument specifies whether to optimize multiplication
 
     n_len = len(pq.literals)
     conjuncts = []

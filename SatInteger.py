@@ -102,7 +102,7 @@ class SatInteger:
 
         return SatInteger(self.sat_memory, result)
 
-    def product_with(self, other):
+    def product_with(self, other, optimize = True):
         if self.n_bits != other.n_bits:
             raise Exception("Could not multiply numbers with different number of bits (" +
                             str(self.n_bits) + " and " + str(other.n_bits) + ")")
@@ -114,6 +114,28 @@ class SatInteger:
         if self.n_bits % 2 == 1:
             raise Exception("Currently we support only 2^k bits for Karatsuba multiplication but "
                             + str(self) + " has " + str(self.n_bits) + " bits")
+            
+        if optimize and self.n_bits==2:
+            # [1] [0]|
+            # =======|
+            # z11 z01| other[1]
+            # z10 z00| other[0]
+                        
+            z00 = And(self.sat_memory, [self.literals[0], other.literals[0]])                        
+            z01 = And(self.sat_memory, [self.literals[0], other.literals[1]])                        
+            z10 = And(self.sat_memory, [self.literals[1], other.literals[0]])                        
+            z11 = And(self.sat_memory, [self.literals[1], other.literals[1]])   
+            
+            a = z00.simplified_literal()                     
+            b = Xor(self.sat_memory, [z10, z01]).simplified_literal()  # half adder
+            carry1 = And(self.sat_memory, [z10, z01]).simplified_literal()
+            c = Xor(self.sat_memory, [z11, carry1]).simplified_literal()  # half adder
+            carry2 = And(self.sat_memory, [z11, carry1]).simplified_literal()
+            d = carry2
+            result = SatInteger(self.sat_memory, [a, b, c, d])
+            print("result is "+str(result))
+            return result
+            
 
         half_bits = self.n_bits // 2
         zero = Constant(self.sat_memory, False)
@@ -143,9 +165,9 @@ class SatInteger:
                          Or(self.sat_memory, v0_minus_v1.literals)])
         xor_signs = xor_signs.simplified_literal()
 
-        u0v0 = u0.product_with(v0)
-        u1v1 = u1.product_with(v1)
-        mixed = u1_minus_u0.product_with(v0_minus_v1)
+        u0v0 = u0.product_with(v0, optimize)
+        u1v1 = u1.product_with(v1, optimize)
+        mixed = u1_minus_u0.product_with(v0_minus_v1, optimize)
 
         # important: we add shifted product of ...11111 * u1_minus_u0, which is the same as shifted -u1_minus_u0
         mixed = mixed.sum_with(u1_minus_u0.negation().and_with(
@@ -182,3 +204,7 @@ class SatInteger:
             return s
             # if we want to see details:
             # return s + " (" + str(e) + ")"
+
+
+#if __name__ == "__main__": # tests for SatInteger
+    

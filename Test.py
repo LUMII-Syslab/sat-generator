@@ -197,11 +197,11 @@ def test_product(p, q):
     print("p*q = ", pq)
 
 
-def test_product_with_solver(n, p, q):
+def test_product_with_solver(n, p, q, optimize = False):
     mem = p.sat_memory
     #mem.clear_values()
 
-    p_q = p.product_with(q)
+    p_q = p.product_with(q, optimize)
 
     # Computing the expected_result clause, e.g.,
     # expected_result = And(mem, [  # 0110 = 6
@@ -280,6 +280,7 @@ def test_product_with_solver(n, p, q):
 
 
 if __name__ == "__main__":
+
 
     given_p = 127#114#127 #114 # 127  #3
     given_q = 113#101#113 #101 # 113  #2
